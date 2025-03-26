@@ -8,3 +8,25 @@ def voice():
                "0 for English, and # to repeat.")
     response.append(gather)
     return str(response)
+
+@app.route("/feature", methods=["GET", "POST"])
+def feature():
+    response = VoiceResponse()
+    digits = request.form.get("Digits", "")
+
+    routes = {
+        "1": "/nearest_hospital", "2": "/medical_news", "3": "/medicine_availability",
+        "4": "/vaccination",
+        "5": "/emergency_services", "6": "/health_schemes",
+        "0": "/feature", "#": "/language"
+    }
+
+    if digits in routes:
+        response.redirect(routes[digits])
+    else:
+        response.say("Invalid option. Please try again.")
+
+    return str(response)
+
+
+
