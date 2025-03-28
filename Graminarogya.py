@@ -1,3 +1,25 @@
+import logging
+import googlemaps
+from flask import Flask, request
+from googletrans import Translator
+from twilio.twiml.voice_response import VoiceResponse, Gather
+
+app = Flask(__name__)
+
+# ✅ Setup Logging
+logging.basicConfig(level=logging.DEBUG)
+
+# ✅ Initialize APIs (Use your actual API keys)
+GMAPS_API_KEY = "AIzaSyBjiI7Jz5CKjYIDrJRON-tXu90cZ0QJMBM"
+gmaps = googlemaps.Client(key=GMAPS_API_KEY)
+translator = Translator()
+
+
+@app.route("/")
+def home():
+    return "Welcome to the Healthcare Helpline! Dial in to access services."
+
+
 @app.route("/voice", methods=["GET", "POST"])
 def voice():
     response = VoiceResponse()
