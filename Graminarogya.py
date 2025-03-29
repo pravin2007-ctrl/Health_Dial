@@ -50,5 +50,23 @@ def feature():
 
     return str(response)
 
+@app.route("/nearest_hospital", methods=["GET", "POST"])
+def nearest_hospital():
+    response = VoiceResponse()
+    try:
+        user_location = (12.9716, 77.5946)  # Example: Bangalore
+        places = gmaps.places(query="hospital", location=user_location, radius=5000)
+
+        if "results" in places and places["results"]:
+            hospitals = [f"{h.get('name', 'Unnamed')}, {h.get('formatted_address', 'Unknown')}" for h in
+                         places["results"][:3]]
+            response.say("Nearest hospitals are: " + ", ".join(hospitals))
+        else:
+            response.say("No hospitals found nearby.")
+    except Exception as e:
+        logging.error(f"Error: {e}")
+        response.say("Error fetching hospital details.")
+    return str(response)
+
 
 
